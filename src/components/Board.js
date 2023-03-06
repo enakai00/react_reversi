@@ -16,10 +16,9 @@ const Cell = (props) => {
           width: "67px", height: "67px"
   };
   let element = (
-    <img src={blank} alt="black"
+    <img src={blank} alt="blank"
 	  onClick={props.onClick} style={style}/>
   );
-
   if (props.mark === "b") {
     element = (
       <img src={black} alt="black" style={style}/>
