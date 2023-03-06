@@ -8,3 +8,6 @@ npm install -g yarn
 yarn install
 yarn start
 ```
+
+## Screenshot
+![Screenshot](doc/img/screenshot.png)
