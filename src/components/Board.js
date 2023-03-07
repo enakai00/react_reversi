@@ -70,9 +70,9 @@ export const Board = (props) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   };
 
-  const pass = () => {
+  const pass = async () => {
     info.turn = opponent[info.turn];
-    setDummyState([]);
+    await setDummyState([]);
   };
 
   const onClick = (x, y) => {
@@ -98,7 +98,7 @@ export const Board = (props) => {
           break; // search failed.
         }
         if (info.field[yy][xx] === opponent[info.turn]) {
-          search_state = 1;
+          search_state = 1; // search continues.
           continue;
         }
         if (search_state === 1 && info.field[yy][xx] === info.turn) {
