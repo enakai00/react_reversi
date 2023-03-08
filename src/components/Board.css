@@ -1,7 +1,7 @@
 .bg-image {
   position: relative;
-  width: 584x;
-  height: 584px;
-  background: url("../assets/game_reversi_board.png") no-repeat center;
+  width: 584px;
+  height: 592px;
+  background: url("../assets/board.png") no-repeat center;
   background-size: 100%;
 }

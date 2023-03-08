@@ -1,19 +1,19 @@
 import React, { useState, useRef } from "react";
 import { Stack, Box, Button } from "@chakra-ui/react";
 
-import black from "../assets/game_reversi_black.png";
-import white from "../assets/game_reversi_white.png";
-import blank from "../assets/game_reversi_blank.png";
+import black from "../assets/black.png";
+import white from "../assets/white.png";
+import blank from "../assets/blank.png";
 
 import "./Board.css";
 
 
 const Cell = (props) => {
-  let x = 25 + 70 * props.pos_x;
-  let y = 13 + 70 * props.pos_y;
+  let x = 25 + 67 * props.pos_x;
+  let y = 28 + 67 * props.pos_y;
   const style = {
     position: "absolute",
-    width: "67px", height: "67px",
+    width: "65px", height: "65px",
     left: x, top: y,
   };
 
