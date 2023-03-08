@@ -17,6 +17,8 @@ Set `homepage` in `package.json` to point your GitHub Pages URL.
   "homepage": "http://enakai00.github.io/react_examples/contents/reversi",
 ```
 
+Build production binaries.
+
 ```
 yarn build
 ```
