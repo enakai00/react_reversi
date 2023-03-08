@@ -1,5 +1,5 @@
 {
-  "name": "react_mine_sweeper",
+  "name": "react_reversi",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
