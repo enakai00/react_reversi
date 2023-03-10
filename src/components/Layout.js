@@ -18,7 +18,7 @@ export const Layout = (props) => {
   const gameInfo = {score: score, turn: turn, freeze: freeze};
   const setGameInfo = {score: setScore, turn: setTurn};
 
- const restart = () => {
+  const restart = () => {
     setTurn("black");
     setGameID(new Date().getTime());
   }
@@ -31,9 +31,9 @@ export const Layout = (props) => {
   }
 
   const element = (
-    <Container p="8" minWidth="2xl" maxWidth="2xl">
+    <Container padding="8"> {/* minWidth="2xl" maxWidth="2xl">*/}
       <Stack spacing="1">
-        <Heading m="2" as="h1" fontSize="3xl" w="full">Reversi</Heading>
+        <Heading marginLeft="4" fontSize="3xl">Reversi</Heading>
         <Box>
           <Board key={gameID} gameInfo={[gameInfo, setGameInfo]}/>
         </Box>
