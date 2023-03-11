@@ -75,7 +75,8 @@ export const Board = (props) => {
   }
 
   const onClick = (x, y) => {
-    move(x, y);
+    if (!gameInfo.freeze.current) {
+      move(x, y);
   }
 
   const move = async (x, y) => {
@@ -84,15 +85,15 @@ export const Board = (props) => {
     // 8 directions to search.
     const dx = [1,-1, 0, 0,-1, 1, 1,-1]
     const dy = [0, 0, 1,-1,-1,-1, 1, 1]
+    const allowed = new Array(8)
+    allowed.fill(false);
 
-    let allowed = false;
     for (let i = 0; i < 8; i++) { // search for 8 directions.
       if (info.field[y][x] !== " ") { // not a blank cell
         break;
       }
       let search_state = 0;
-      var j;
-      for (j = 1; j < 8; j++) {
+      for (let j = 1; j < info.size; j++) {
         const xx = x + j*dx[i];
         const yy = y + j*dy[i];
         if (xx < 0 || xx >= info.size || yy < 0 || yy >= info.size) {
@@ -110,29 +111,37 @@ export const Board = (props) => {
       }
 
       if (search_state === 2) {
-        // Animation starts.
-        info.field[y][x] = gameInfo.turn;
-        if (!allowed) {
-          await sleep(100);
-          await setDummyState([]);
-        }
-        for (let jj = 1; jj < j; jj++) {
-          info.field[y + jj*dy[i]][x + jj*dx[i]] = gameInfo.turn;
-          await sleep(100);
-          await setDummyState([]);
-        }
-        info.field[y][x] = " ";
-        allowed = true;
-        // Animation ends.
+        allowed[i] = true;
       }
     }
-    if (allowed) {
+
+    if (allowed.includes(true)) {
+      // Animation starts.
       info.field[y][x] = gameInfo.turn;
+      await setDummyState([]);
+      for (let i = 0; i < 8; i++) {
+        if (!allowed[i]) {
+          continue;
+        }
+        for (let j = 1; j < info.size; j++) {
+          const xx = x + j*dx[i];
+          const yy = y + j*dy[i];
+          if (info.field[yy][xx] === gameInfo.turn) {
+            break;
+          }
+          console.assert(info.field[yy][xx] === opponent[gameInfo.turn], "Error!");
+          info.field[yy][xx] = gameInfo.turn;
+          await sleep(100);
+          await setDummyState([]);
+        }
+      }
+      // Animation ends.
       setGameInfo.turn(opponent[gameInfo.turn]);
       await setDummyState([]);
     }
     gameInfo.freeze.current = false;
   }
+
 
   const field_elements = [];
   let black_score = 0;
