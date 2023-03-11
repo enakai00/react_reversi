@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Box } from "@chakra-ui/react";
 
 import board from "../assets/board.png";
@@ -33,7 +33,8 @@ const Cell = (props) => {
     break;
     default:
       element = (
-        <img src={blank} alt="blank" style={style} />
+        <img src={blank} alt="blank" style={style}
+             onClick={props.onClick}/>
       );
   }
   return element;
@@ -59,12 +60,24 @@ export const Board = (props) => {
   const fieldRef = useRef(getField(size));
   const field = fieldRef.current;
 
+  // Since `field` stores an array object, updating it
+  // doesn't rerender the component. Instead, dummyState
+  // is used to rerender the compoent.
+  // eslint-disable-next-line
+  const [dummyState, setDummyState] = useState([]);
+
+  const onClick = (x, y) => {
+    field[y][x] = "black";
+    setDummyState([]);
+  }
+
   const fieldElements = [];
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       fieldElements.push(
         <Cell key={y.toString()+x.toString()}
-              pos_x={x} pos_y={y} mark={field[y][x]} />
+              pos_x={x} pos_y={y} mark={field[y][x]}
+              onClick={() => onClick(x, y)} />
       );
     }
   }
