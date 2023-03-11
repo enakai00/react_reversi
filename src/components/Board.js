@@ -11,8 +11,8 @@ import "./Board.css";
 
 
 const Cell = (props) => {
-  let x = 25 + 67 * props.pos_x;
-  let y = 28 + 67 * props.pos_y;
+  const x = 25 + 67 * props.pos_x;
+  const y = 28 + 67 * props.pos_y;
   const style = {
     position: "absolute",
     width: "65px", height: "65px",
@@ -145,9 +145,8 @@ export const Board = (props) => {
       if (info.field[y][x] === "white"){
         white_score += 1;
       }
-      // Add the cell value to the unique key so that modified cell will be rerendered.
       field_elements.push(
-        <Cell key={y.toString()+x.toString()+info.field[y][x]}
+        <Cell key={y.toString()+x.toString() /* +info.field[y][x]} */}
               pos_x={x} pos_y={y} mark={info.field[y][x]}
               onClick={() => onClick(x, y)} />
       );
