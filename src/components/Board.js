@@ -60,6 +60,11 @@ export const Board = (props) => {
   const fieldRef = useRef(getField(size));
   const field = fieldRef.current;
 
+  // Unpack states.
+  const turn = props.states.turn;
+  const setTurn = props.states.setTurn;
+  const freeze = props.states.freeze;
+
   // Since `field` stores an array object, updating it
   // doesn't rerender the component. Instead, dummyState
   // is used to rerender the compoent.
@@ -67,9 +72,75 @@ export const Board = (props) => {
   const [dummyState, setDummyState] = useState([]);
 
   const onClick = (x, y) => {
-    field[y][x] = "black";
-    setDummyState([]);
+    move(x, y);
   }
+
+  const move = async (x, y) => {
+    const sleep = (milliseconds) => {
+      return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
+    freeze.current = true;
+
+    // 8 directions to search.
+    const dx = [1,-1, 0, 0,-1, 1, 1,-1]
+    const dy = [0, 0, 1,-1,-1,-1, 1, 1]
+    const allowed = new Array(8)
+    allowed.fill(false);
+
+    const opponent = {black: "white", white: "black"};
+
+    for (let i = 0; i < 8; i++) { // search for 8 directions.
+      if (field[y][x] !== "blank") { // not a blank cell
+        break;
+      }
+
+      let search_state = 0; // search starts.
+      for (let j = 1; j < size; j++) {
+        const xx = x + j*dx[i];
+        const yy = y + j*dy[i];
+        if (xx < 0 || xx >= size || yy < 0 || yy >= size) {
+          break; // search failed.
+        }
+        if (field[yy][xx] === opponent[turn]) {
+          search_state = 1; // search continues.
+          continue;
+        }
+        if (search_state === 1 && field[yy][xx] === turn) {
+          search_state = 2; // search succeeded.
+          break;
+        }
+        break; // search failed.
+      }
+      if (search_state === 2) {
+        allowed[i] = true;
+      }
+    }
+
+    if (allowed.includes(true)) {
+      // Animation starts.
+      field[y][x] = turn;
+      await setDummyState([]);
+      for (let i = 0; i < 8; i++) {
+        if (!allowed[i]) {
+          continue;
+        }
+        for (let j = 1; j < size; j++) {
+          const xx = x + j*dx[i];
+          const yy = y + j*dy[i];
+          if (field[yy][xx] === turn) {
+            break;
+          }
+          field[yy][xx] = turn;
+          await sleep(100);
+          await setDummyState([]);
+        }
+      }
+      // Animation ends.
+      await setTurn(opponent[turn]);
+    }
+    freeze.current = false;
+  }
+
 
   const fieldElements = [];
   for (let y = 0; y < size; y++) {
