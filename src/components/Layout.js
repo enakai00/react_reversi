@@ -5,6 +5,8 @@ import { Board } from "./Board";
 import { InformationPanel } from "./InformationPanel";
 
 
+export const Context = React.createContext();
+
 export const Layout = (props) => {
   const [gameID, setGameID] = useState(new Date().getTime());
 
@@ -25,17 +27,18 @@ export const Layout = (props) => {
 
   const pass = () => {
     const opponent = {"black": "white", "white": "black"}
-    if (!freeze.value) {
+    if (!freeze.current) {
       setGameInfo.turn(opponent[gameInfo.turn]);
     }
   }
 
   const element = (
-    <Container padding="8"> {/* minWidth="2xl" maxWidth="2xl">*/}
+    <Context.Provider value={[gameInfo, setGameInfo]}>
+    <Container padding="8">
       <Stack spacing="1">
         <Heading marginLeft="4" fontSize="3xl">Reversi</Heading>
         <Box>
-          <Board key={gameID} gameInfo={[gameInfo, setGameInfo]}/>
+          <Board key={gameID} />
         </Box>
         <Box>
           <InformationPanel gameInfo={[gameInfo, setGameInfo]}/>
@@ -50,6 +53,7 @@ export const Layout = (props) => {
         </Box>
       </Stack>
     </Container>
+    </Context.Provider>
   );
 
   return element;

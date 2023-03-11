@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 
 import black from "../assets/black.png";
 import white from "../assets/white.png";
 import blank from "../assets/blank.png";
+
+import { Context } from "./Layout";
 
 import "./Board.css";
 
@@ -57,8 +59,8 @@ class BoardInfo {
 
 
 export const Board = (props) => {
-  // eslint-disable-next-line
-  const [gameInfo, setGameInfo] = props.gameInfo;
+//  const [gameInfo, setGameInfo] = props.gameInfo;
+  const [gameInfo, setGameInfo] = useContext(Context);
 
   const opponent = {"black": "white", "white": "black"}
   const boardInfo = useRef(new BoardInfo(props));
@@ -70,14 +72,14 @@ export const Board = (props) => {
 
   const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
-  };
+  }
 
   const onClick = (x, y) => {
     move(x, y);
-  };
+  }
 
   const move = async (x, y) => {
-    gameInfo.freeze.value = true;
+    gameInfo.freeze.current = true;
 
     // 8 directions to search.
     const dx = [1,-1, 0, 0,-1, 1, 1,-1]
@@ -129,7 +131,7 @@ export const Board = (props) => {
       setGameInfo.turn(opponent[gameInfo.turn]);
       await setDummyState([]);
     }
-    gameInfo.freeze.value = false;
+    gameInfo.freeze.current = false;
   }
 
   const field_elements = [];
