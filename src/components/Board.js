@@ -145,7 +145,6 @@ export const Board = (props) => {
     updateScore();
   }
 
-
   const updateScore = () => {
     const newScore = {black: 0, white:0, blank:0};
     for (let y = 0; y < size; y++) {
