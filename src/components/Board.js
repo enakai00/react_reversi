@@ -64,6 +64,7 @@ export const Board = (props) => {
   const turn = props.states.turn;
   const setTurn = props.states.setTurn;
   const freeze = props.states.freeze;
+  const setScores = props.states.setScores;
 
   // Since `field` stores an array object, updating it
   // doesn't rerender the component. Instead, dummyState
@@ -141,6 +142,18 @@ export const Board = (props) => {
       await setTurn(opponent[turn]);
     }
     freeze.current = false;
+    updateScore();
+  }
+
+
+  const updateScore = () => {
+    const newScore = {black: 0, white:0, blank:0};
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        newScore[field[y][x]] += 1;
+      }
+    }
+    setScores({black: newScore.black, white: newScore.white});
   }
 
 

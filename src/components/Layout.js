@@ -3,15 +3,18 @@ import { Container, Stack,
          Heading, Box, HStack, Button } from "@chakra-ui/react";
 
 import { Board } from "./Board";
+import { Dashboard } from "./Dashboard";
 
 
 export const Layout = (props) => {
   const [gameID, setGameID] = useState(new Date().getTime());
   const [turn, setTurn] = useState("black");
+  const [scores, setScores] = useState({black: 2, white: 2});
   const freeze = useRef(false);
 
   const restart = () => {
     setTurn("black");
+    setScores({black: 2, white: 2});
     setGameID(new Date().getTime());
   }
 
@@ -22,7 +25,11 @@ export const Layout = (props) => {
     }
   }
 
-  const states = {turn: turn, setTurn: setTurn, freeze: freeze};
+  const states = {
+    turn: turn, setTurn: setTurn,
+    scores: scores, setScores: setScores,
+    freeze: freeze,
+  };
 
   const element = (
     <Container padding="8">
@@ -32,7 +39,7 @@ export const Layout = (props) => {
           <Board key={gameID} states={states}/>
         </Box>
         <Box>
-          Turn: {turn}
+          <Dashboard states={states}/>
         </Box>
         <Box>
           <HStack>
