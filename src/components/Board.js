@@ -72,7 +72,9 @@ export const Board = (props) => {
   const [dummyState, setDummyState] = useState([]);
 
   const onClick = (x, y) => {
-    move(x, y);
+    if (!freeze.current) {
+      move(x, y);
+    }
   }
 
   const move = async (x, y) => {
