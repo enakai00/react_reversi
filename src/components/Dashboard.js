@@ -9,27 +9,24 @@ export const Dashboard = (props) => {
   // Unpack states.
   const turn = props.states.turn;
   const scores = props.states.scores;
-  const freeze = props.states.freeze;
 
   const imageMap = {black: black, white: white};
   const style = {width: "24px", height: "24px"};
 
   let winner = null;
-  if (!freeze.current) {
-    if (scores.black === 0) {
-      winner = "white";
-    }
-    if (scores.white === 0) {
+  if (scores.black === 0) {
+    winner = "white";
+  }
+  if (scores.white === 0) {
+    winner = "black";
+  }
+  if (scores.black + scores.white === 8*8) {
+    if (scores.black > scores.white) {
       winner = "black";
-    }
-    if (scores.black + scores.white === 8*8) {
-      if (scores.black > scores.white) {
-        winner = "black";
-      } else if (scores.white > scores.black) {
-        winner = "white";
-      } else {
-        winner = "tie";
-      }
+    } else if (scores.white > scores.black) {
+      winner = "white";
+    } else {
+      winner = "tie";
     }
   }
 
